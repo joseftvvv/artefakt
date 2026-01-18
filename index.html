@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Surveillance Capitalism – Demo</title>
+    <style>
+        :root{
+            --bg:#0b0f14; --text:#e9eef5; --muted:#b7c2d0;
+            --accent:#7dd3fc; --danger:#fb7185; --ok:#86efac;
+            --border:rgba(255,255,255,.12); --shadow:0 14px 40px rgba(0,0,0,.45);
+            --radius:18px;
+        }
+        *{box-sizing:border-box}
+        body{
+            margin:0;
+            font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+            background:
+                    radial-gradient(1100px 800px at 18% 8%, rgba(125,211,252,.12), transparent 60%),
+                    radial-gradient(900px 700px at 85% 25%, rgba(251,113,133,.10), transparent 55%),
+                    radial-gradient(800px 600px at 60% 90%, rgba(134,239,172,.08), transparent 55%),
+                    var(--bg);
+            color:var(--text);
+            min-height:100vh;
+            display:grid;
+            place-items:center;
+            padding:24px;
+        }
+        .app{width:min(1080px,100%); display:grid; gap:14px}
+        header{display:flex; justify-content:space-between; align-items:flex-end; gap:12px; padding:10px 2px}
+        .title{font-size:clamp(22px,3vw,30px); font-weight:800; letter-spacing:.2px; line-height:1.05}
+        .tagline{color:var(--muted); font-size:14px; margin-top:6px}
+        .pill{
+            display:inline-flex; gap:8px; align-items:center; padding:8px 12px;
+            border:1px solid var(--border); border-radius:999px;
+            background:rgba(0,0,0,.18); color:var(--muted); font-size:13px; user-select:none;
+        }
+        .pill strong{color:var(--text); font-weight:750}
+        .layout{display:grid; grid-template-columns:290px 1fr; gap:14px; align-items:start}
+        .panel{
+            background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+            border:1px solid var(--border); border-radius:var(--radius);
+            box-shadow:var(--shadow); overflow:hidden;
+        }
+        .panel.pad{padding:16px 16px 14px}
+        .progress-wrap{padding:14px 16px 0}
+        .progress{height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden}
+        .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--danger)); transition:width .25s ease}
+        .screen{display:none; gap:12px; padding:14px 16px 16px; animation:fadeUp .18s ease both}
+        .screen.active{display:grid}
+        @keyframes fadeUp{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
+        .question{font-size:20px; font-weight:750; line-height:1.25; margin-top:2px}
+        .hint{color:var(--muted); font-size:14px; line-height:1.45}
+        .grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:2px}
+        button{
+            appearance:none; border:1px solid var(--border); background:rgba(18,26,36,.65); color:var(--text);
+            padding:12px 12px; border-radius:16px; cursor:pointer; text-align:left;
+            transition:transform .06s ease, border-color .15s ease, background .15s ease;
+            box-shadow:0 6px 16px rgba(0,0,0,.18);
+        }
+        button:hover{border-color:rgba(125,211,252,.55); background:rgba(18,26,36,.88)}
+        button:active{transform:translateY(1px)}
+        button.secondary{background:rgba(0,0,0,.18); box-shadow:none}
+        .btnrow{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top:6px}
+        .small{font-size:12px; color:var(--muted)}
+        .stepper-title{font-weight:800; font-size:14px; padding-bottom:10px}
+        .stepper{display:grid; gap:10px; margin-top:10px}
+        .step{
+            border:1px solid var(--border); border-radius:16px; padding:10px;
+            background:rgba(0,0,0,.14); display:flex; gap:10px; align-items:flex-start;
+        }
+        .dot{width:10px; height:10px; border-radius:999px; background:rgba(255,255,255,.16); margin-top:5px; flex:0 0 auto}
+        .step.active{border-color:rgba(125,211,252,.55); background:rgba(125,211,252,.08)}
+        .step.active .dot{background:var(--accent)}
+        .step.done .dot{background:var(--ok)}
+        .step b{display:block; font-size:13px; font-weight:800; margin-bottom:2px}
+        .step span{display:block; font-size:12px; color:var(--muted); line-height:1.35}
+        .callout{
+            border:1px solid rgba(125,211,252,.35); background:rgba(125,211,252,.08);
+            border-radius:16px; padding:12px;
+        }
+        .callout b{font-weight:900}
+        .callout p{margin:6px 0 0 0; color:var(--muted); font-size:13px; line-height:1.45}
+        .boxgrid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:6px}
+        .box{border:1px solid var(--border); border-radius:16px; padding:12px; background:rgba(0,0,0,.18)}
+        .box h3{margin:0 0 8px 0; font-size:13px; color:var(--muted); font-weight:800; letter-spacing:.2px}
+        ul{margin:0; padding-left:18px}
+        li{margin:6px 0}
+        .algo{border-top:1px dashed rgba(255,255,255,.18); padding-top:12px; color:var(--muted); font-size:13px; line-height:1.45; display:none}
+        .algo.show{display:block}
+        .tips{border:1px solid rgba(134,239,172,.28); background:rgba(134,239,172,.08); border-radius:16px; padding:12px}
+        .footer-note{text-align:center; color:var(--muted); font-size:12px; padding:4px 0}
+
+        .tablewrap{border:1px solid var(--border); border-radius:16px; overflow:hidden; background:rgba(0,0,0,.18)}
+        table{width:100%; border-collapse:collapse}
+        th,td{padding:10px 10px; text-align:left; border-bottom:1px solid rgba(255,255,255,.08); font-size:13px}
+        th{color:var(--muted); font-weight:800}
+        tr:last-child td{border-bottom:none}
+        .winner{outline:2px solid rgba(134,239,172,.35); background:rgba(134,239,172,.06)}
+        .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+
+        @media (max-width:900px){.layout{grid-template-columns:1fr}}
+        @media (max-width:780px){.grid{grid-template-columns:1fr} .boxgrid{grid-template-columns:1fr}}
+    </style>
+</head>
+
+<body>
+<div class="app">
+    <header>
+        <div>
+            <div class="title">Surveillance Capitalism</div>
+            <div class="tagline">Wie Daten zur Waffe gegen uns werden.</div>
+        </div>
+        <div class="pill" id="stepPill">Schritt <strong id="stepText">0</strong>/5</div>
+    </header>
+
+    <div class="layout">
+        <aside class="panel pad">
+            <div class="stepper-title">Ablauf (Modell)</div>
+            <div class="callout">
+                <b>Modell:</b> Signale → Profil → Entscheidung
+                <p>Entscheidung als <b>Ranking</b>: <span class="mono">Score = P(Klick) × Bid</span></p>
+            </div>
+
+            <div class="stepper" id="stepper">
+                <div class="step" data-step="0"><div class="dot"></div><div><b>Start</b><span>Kurz: Was passiert hier?</span></div></div>
+                <div class="step" data-step="1"><div class="dot"></div><div><b>Interesse</b><span>Lenkt Content & Werbung</span></div></div>
+                <div class="step" data-step="2"><div class="dot"></div><div><b>Zeitmuster</b><span>Routine, Stress, Kaufmomente</span></div></div>
+                <div class="step" data-step="3"><div class="dot"></div><div><b>Gerät</b><span>Proxy: Kaufkraft / Premium</span></div></div>
+                <div class="step" data-step="4"><div class="dot"></div><div><b>Stimmung</b><span>Vulnerable Moments / Trigger</span></div></div>
+                <div class="step" data-step="5"><div class="dot"></div><div><b>Ergebnis</b><span>Profil + Auswahl der Anzeige</span></div></div>
+            </div>
+
+            <div class="small" style="margin-top:12px;">
+                Disclaimer: Vereinfachtes Modell · Keine echten Daten · Nur für Lehrzwecke
+            </div>
+        </aside>
+
+        <main class="panel">
+            <div class="progress-wrap">
+                <div class="progress" aria-label="Fortschritt"><div class="bar" id="progressBar"></div></div>
+            </div>
+
+            <section class="screen active" id="screenStart">
+                <div class="question">In 60 Sekunden: Aus harmlosen Klicks wird eine Werbe-Entscheidung.</div>
+                <div class="hint">Wir berechnen eine Klickwahrscheinlichkeit (CTR-Modell) und wählen die Anzeige mit dem höchsten erwarteten Wert.</div>
+                <div class="btnrow">
+                    <button id="startBtn">Start</button>
+                    <span class="pill">Keine echten Daten</span>
+                </div>
+            </section>
+
+            <section class="screen" id="screenQ1">
+                <div class="question">1) Wofür interessierst du dich gerade?</div>
+                <div class="hint">Interessen sind starke Signale: Sie beeinflussen, welche Anzeigen „passen“.</div>
+                <div class="grid">
+                    <button data-q="interest" data-v="health">Gesundheit / Fitness</button>
+                    <button data-q="interest" data-v="jobs">Jobs / Karriere</button>
+                    <button data-q="interest" data-v="travel">Reisen</button>
+                    <button data-q="interest" data-v="gaming">Gaming / Entertainment</button>
+                </div>
+            </section>
+
+            <section class="screen" id="screenQ2">
+                <div class="question">2) Wann bist du meistens online?</div>
+                <div class="hint">Zeitmuster sind Features: sie korrelieren mit Routine, Stress und Nutzung.</div>
+                <div class="grid">
+                    <button data-q="onlineTime" data-v="morning">Morgens</button>
+                    <button data-q="onlineTime" data-v="night">Nachts</button>
+                    <button data-q="onlineTime" data-v="often">Sehr oft / ständig</button>
+                    <button data-q="onlineTime" data-v="rare">Nur kurz / selten</button>
+                </div>
+            </section>
+
+            <section class="screen" id="screenQ3">
+                <div class="question">3) Welches Gerät nutzt du gerade?</div>
+                <div class="hint">Gerät kann als Proxy für Kaufkraft genutzt werden (vereinfacht).</div>
+                <div class="grid">
+                    <button data-q="device" data-v="iphone">iPhone</button>
+                    <button data-q="device" data-v="androidCheap">Günstiges Android</button>
+                    <button data-q="device" data-v="androidPremium">Premium Android</button>
+                    <button data-q="device" data-v="laptop">Laptop / Desktop</button>
+                </div>
+            </section>
+
+            <section class="screen" id="screenQ4">
+                <div class="question">4) Was trifft gerade eher zu?</div>
+                <div class="hint">Stimmung kann beeinflussen, welche Botschaften „wirken“ (vereinfachtes Beispiel).</div>
+                <div class="grid">
+                    <button data-q="mood" data-v="stressed">Gestresst</button>
+                    <button data-q="mood" data-v="motivated">Motiviert</button>
+                    <button data-q="mood" data-v="insecure">Unsicher</button>
+                    <button data-q="mood" data-v="curious">Neugierig</button>
+                </div>
+            </section>
+
+            <section class="screen" id="screenResult">
+                <div class="question">Ergebnis: Signale → Profil → Entscheidung (CTR + Ranking)</div>
+                <div class="hint">Wir berechnen zuerst <span class="mono">P(Klick)</span> und wählen dann die Anzeige mit dem höchsten <span class="mono">Score = P(Klick) × Bid</span>.</div>
+
+                <div class="boxgrid">
+                    <div class="box">
+                        <h3>A) Gesammelte Signale</h3>
+                        <ul id="signalsList"></ul>
+                    </div>
+                    <div class="box">
+                        <h3>B) Abgeleitetes Profil</h3>
+                        <ul id="profileList"></ul>
+                    </div>
+                    <div class="box">
+                        <h3>C) Gewinner-Anzeige</h3>
+                        <ul id="decisionList"></ul>
+                    </div>
+                </div>
+
+                <div class="box" style="margin-top:10px;">
+                    <h3>D) Anzeigen-Auktion (eingeblendete Wahrscheinlichkeiten)</h3>
+                    <div class="tablewrap">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Anzeige</th>
+                                <th>Match-Faktor</th>
+                                <th>P(Klick)</th>
+                                <th>Bid</th>
+                                <th>Score = P×Bid</th>
+                            </tr>
+                            </thead>
+                            <tbody id="adsTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="small" style="margin-top:8px;">
+                        Hinweis: Match-Faktor ist eine vereinfachte „Relevanz“-Komponente (Interest-Match).
+                    </div>
+                </div>
+
+                <div class="tips" style="margin-top:12px;">
+                    <b>Was kannst du tun?</b>
+                    <ul style="margin-top:8px;">
+                        <li>App-Berechtigungen einschränken (Standort, Kontakte, Mikrofon nur wenn nötig).</li>
+                        <li>Tracking-Schutz im Browser aktivieren oder einen Tracker-Blocker nutzen.</li>
+                        <li>Personalisierte Werbung/Tracking in Konto- und Geräteeinstellungen deaktivieren.</li>
+                    </ul>
+                </div>
+
+                <div class="btnrow">
+                    <button id="restartBtn" class="secondary">Neu starten</button>
+                    <button id="toggleAlgoBtn">Zeige die Rechnung</button>
+                </div>
+
+                <div class="algo" id="algoBox">
+                    <strong>Rechnung (Logistische Regression / CTR):</strong>
+                    <div class="small" style="margin-top:6px;">
+                        <span class="mono">z = w0 + Σ(wi·xi)</span> &nbsp;→&nbsp;
+                        <span class="mono">P(Klick) = sigmoid(z) = 1/(1+e^-z)</span>
+                    </div>
+                    <ul id="algoList" style="margin-top:10px;"></ul>
+                    <div class="hint" style="margin-top:10px;">
+                        Takeaway: Vorhersagen (P(Klick)) + ökonomische Logik (Bid) steuern, was du siehst.
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="footer-note">Made by Josef und Arbnor</div>
+</div>
+
+<script>
+    const screens = ["screenStart","screenQ1","screenQ2","screenQ3","screenQ4","screenResult"];
+    const answers = { interest:null, onlineTime:null, device:null, mood:null };
+    let currentIndex = 0;
+
+    const stepText = document.getElementById("stepText");
+    const progressBar = document.getElementById("progressBar");
+    const startBtn = document.getElementById("startBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const toggleAlgoBtn = document.getElementById("toggleAlgoBtn");
+
+    const signalsList = document.getElementById("signalsList");
+    const profileList = document.getElementById("profileList");
+    const decisionList = document.getElementById("decisionList");
+    const algoList = document.getElementById("algoList");
+    const algoBox = document.getElementById("algoBox");
+    const adsTableBody = document.getElementById("adsTableBody");
+
+    const stepEls = Array.from(document.querySelectorAll(".step"));
+
+    function showScreen(index){
+        currentIndex = index;
+        for(const id of screens) document.getElementById(id).classList.remove("active");
+        document.getElementById(screens[index]).classList.add("active");
+
+        const totalSteps = 5;
+        const shownStep = Math.min(Math.max(index,0), totalSteps);
+        stepText.textContent = String(shownStep);
+        progressBar.style.width = `${(shownStep/totalSteps)*100}%`;
+
+        stepEls.forEach(el=>{
+            const n = Number(el.dataset.step);
+            el.classList.remove("active","done");
+            if(n === index) el.classList.add("active");
+            if(n < index) el.classList.add("done");
+        });
+    }
+
+    function resetAnswers(){
+        answers.interest = null;
+        answers.onlineTime = null;
+        answers.device = null;
+        answers.mood = null;
+    }
+
+    function labelFor(key, value){
+        const map = {
+            interest:{health:"Interesse: Gesundheit/Fitness",jobs:"Interesse: Jobs/Karriere",travel:"Interesse: Reisen",gaming:"Interesse: Gaming/Entertainment"},
+            onlineTime:{morning:"Online: morgens",night:"Online: nachts",often:"Online: sehr oft",rare:"Online: selten"},
+            device:{iphone:"Gerät: iPhone",androidCheap:"Gerät: günstiges Android",androidPremium:"Gerät: Premium Android",laptop:"Gerät: Laptop/Desktop"},
+            mood:{stressed:"Stimmung: gestresst",motivated:"Stimmung: motiviert",insecure:"Stimmung: unsicher",curious:"Stimmung: neugierig"}
+        };
+        return map[key]?.[value] ?? `${key}: ${value}`;
+    }
+
+    function sigmoid(z){
+        return 1/(1+Math.exp(-z));
+    }
+
+    function clamp(x, lo, hi){
+        return Math.max(lo, Math.min(hi, x));
+    }
+
+    function computeCTRModel(){
+        const w0 = -0.35;
+
+        const weights = {
+            interest: { health: 0.40, jobs: 0.20, travel: 0.35, gaming: 0.25 },
+            onlineTime: { morning: 0.10, night: 0.20, often: 0.45, rare: -0.25 },
+            device: { iphone: 0.25, androidPremium: 0.20, laptop: 0.10, androidCheap: -0.20 },
+            mood: { stressed: 0.10, motivated: 0.30, insecure: 0.05, curious: 0.20 }
+        };
+
+        const contrib = [];
+        let z = w0;
+        contrib.push({ name: "Bias w0", value: w0 });
+
+        const aI = weights.interest[answers.interest] ?? 0; z += aI; contrib.push({ name: `Interest (${answers.interest})`, value: aI });
+        const aT = weights.onlineTime[answers.onlineTime] ?? 0; z += aT; contrib.push({ name: `OnlineTime (${answers.onlineTime})`, value: aT });
+        const aD = weights.device[answers.device] ?? 0; z += aD; contrib.push({ name: `Device (${answers.device})`, value: aD });
+        const aM = weights.mood[answers.mood] ?? 0; z += aM; contrib.push({ name: `Mood (${answers.mood})`, value: aM });
+
+        const p = sigmoid(z);
+        return { z, p, contrib };
+    }
+
+    const ads = [
+        { id:"ad_health", title:"Stress-Reset Kurs (7 Tage)", topic:"health", bid:2.20 },
+        { id:"ad_jobs", title:"Bewerbungs-Coaching Express", topic:"jobs", bid:2.50 },
+        { id:"ad_travel", title:"Last-Minute Reise-Deal", topic:"travel", bid:1.90 },
+        { id:"ad_gaming", title:"Gaming Bundle – Heute Rabatt", topic:"gaming", bid:1.60 },
+        { id:"ad_generic", title:"Vergleichsportal – Top-Angebote", topic:"generic", bid:1.10 }
+    ];
+
+    function matchFactor(adTopic, userInterest){
+        if(adTopic === "generic") return 0.85;
+        if(adTopic === userInterest) return 1.25;
+        return 0.70;
+    }
+
+    function deriveProfileBuckets(model){
+        const power = (answers.device==="iphone" || answers.device==="androidPremium") ? "hoch"
+            : (answers.device==="androidCheap" ? "niedrig" : "mittel");
+
+        const intensity = (answers.onlineTime==="often") ? "hoch"
+            : (answers.onlineTime==="rare" ? "niedrig" : "mittel");
+
+        const vuln = (answers.onlineTime==="night" || answers.mood==="insecure" || answers.mood==="stressed")
+            ? ((answers.onlineTime==="night" && (answers.mood==="insecure" || answers.mood==="stressed")) ? "hoch" : "mittel")
+            : "niedrig";
+
+        const ctrBucket = model.p >= 0.62 ? "hoch" : (model.p >= 0.48 ? "mittel" : "niedrig");
+
+        return { power, intensity, vuln, ctrBucket };
+    }
+
+    function fillResult(){
+        signalsList.innerHTML = "";
+        profileList.innerHTML = "";
+        decisionList.innerHTML = "";
+        algoList.innerHTML = "";
+        adsTableBody.innerHTML = "";
+
+        for(const key of Object.keys(answers)){
+            const li = document.createElement("li");
+            li.textContent = labelFor(key, answers[key]);
+            signalsList.appendChild(li);
+        }
+
+        const ctr = computeCTRModel();
+        const buckets = deriveProfileBuckets(ctr);
+
+        const profileItems = [
+            `CTR / Klickwahrscheinlichkeit (Basis): ${(ctr.p*100).toFixed(1)}% (${buckets.ctrBucket})`,
+            `Kaufkraft (Proxy): ${buckets.power}`,
+            `Nutzungsintensität (Proxy): ${buckets.intensity}`,
+            `Vulnerabilität (Proxy): ${buckets.vuln}`
+        ];
+        for(const t of profileItems){
+            const li = document.createElement("li");
+            li.textContent = t;
+            profileList.appendChild(li);
+        }
+
+        const auctionRows = [];
+        for(const ad of ads){
+            const m = matchFactor(ad.topic, answers.interest);
+            const pAd = clamp(ctr.p * m, 0.01, 0.99);
+            const score = pAd * ad.bid;
+            auctionRows.push({ ...ad, match:m, pAd, score });
+        }
+
+        auctionRows.sort((a,b)=> b.score - a.score);
+        const winner = auctionRows[0];
+
+        decisionList.innerHTML = "";
+        const d1 = document.createElement("li");
+        d1.textContent = `Gewinner: ${winner.title}`;
+        decisionList.appendChild(d1);
+
+        const d2 = document.createElement("li");
+        d2.innerHTML = `Begründung: Höchster <span class="mono">Score = P(Klick) × Bid</span>`;
+        decisionList.appendChild(d2);
+
+        const d3 = document.createElement("li");
+        d3.textContent = `P(Klick) (Gewinner): ${(winner.pAd*100).toFixed(1)}% · Bid: ${winner.bid.toFixed(2)} · Score: ${winner.score.toFixed(3)}`;
+        decisionList.appendChild(d3);
+
+        for(const row of auctionRows){
+            const tr = document.createElement("tr");
+            if(row.id === winner.id) tr.classList.add("winner");
+
+            const tdA = document.createElement("td"); tdA.textContent = row.title;
+            const tdM = document.createElement("td"); tdM.textContent = row.match.toFixed(2);
+            const tdP = document.createElement("td"); tdP.textContent = (row.pAd*100).toFixed(1) + "%";
+            const tdB = document.createElement("td"); tdB.textContent = row.bid.toFixed(2);
+            const tdS = document.createElement("td"); tdS.textContent = row.score.toFixed(3);
+
+            tr.appendChild(tdA); tr.appendChild(tdM); tr.appendChild(tdP); tr.appendChild(tdB); tr.appendChild(tdS);
+            adsTableBody.appendChild(tr);
+        }
+
+        const zLine = document.createElement("li");
+        zLine.innerHTML = `<span class="mono">z</span> = ${ctr.z.toFixed(3)}  →  <span class="mono">P(Klick)</span> = ${(ctr.p*100).toFixed(2)}%`;
+        algoList.appendChild(zLine);
+
+        const cHead = document.createElement("li");
+        cHead.textContent = "Beiträge (wi·xi) im CTR-Modell:";
+        algoList.appendChild(cHead);
+
+        for(const c of ctr.contrib){
+            const li = document.createElement("li");
+            li.innerHTML = `${c.name}: <span class="mono">${(c.value>=0?"+":"")}${c.value.toFixed(3)}</span>`;
+            algoList.appendChild(li);
+        }
+
+        const aHead = document.createElement("li");
+        aHead.textContent = "Auktion / Ranking:";
+        algoList.appendChild(aHead);
+
+        const top = auctionRows[0], second = auctionRows[1];
+        const liTop = document.createElement("li");
+        liTop.innerHTML = `Top 1: ${top.title} → <span class="mono">P=${(top.pAd*100).toFixed(1)}%</span>, <span class="mono">Bid=${top.bid.toFixed(2)}</span>, <span class="mono">Score=${top.score.toFixed(3)}</span>`;
+        algoList.appendChild(liTop);
+
+        const liSecond = document.createElement("li");
+        liSecond.innerHTML = `Top 2: ${second.title} → <span class="mono">P=${(second.pAd*100).toFixed(1)}%</span>, <span class="mono">Bid=${second.bid.toFixed(2)}</span>, <span class="mono">Score=${second.score.toFixed(3)}</span>`;
+        algoList.appendChild(liSecond);
+
+        const liRule = document.createElement("li");
+        liRule.innerHTML = `Entscheidung: Anzeige mit max(<span class="mono">P×Bid</span>) gewinnt.`;
+        algoList.appendChild(liRule);
+    }
+
+    function goToResult(){
+        fillResult();
+        showScreen(screens.length-1);
+    }
+
+    startBtn.addEventListener("click", ()=> showScreen(1));
+    restartBtn.addEventListener("click", ()=>{
+        resetAnswers();
+        algoBox.classList.remove("show");
+        toggleAlgoBtn.textContent = "Zeige die Rechnung";
+        showScreen(0);
+    });
+    toggleAlgoBtn.addEventListener("click", ()=>{
+        algoBox.classList.toggle("show");
+        toggleAlgoBtn.textContent = algoBox.classList.contains("show") ? "Verstecke die Rechnung" : "Zeige die Rechnung";
+    });
+
+    document.addEventListener("click", (event)=>{
+        const btn = event.target;
+        if(!(btn instanceof HTMLButtonElement)) return;
+        const q = btn.dataset.q;
+        const v = btn.dataset.v;
+        if(!q || !v) return;
+
+        answers[q] = v;
+        if(q === "mood") goToResult();
+        else showScreen(Math.min(currentIndex+1, screens.length-1));
+    });
+
+    showScreen(0);
+</script>
+</body>
+</html>
