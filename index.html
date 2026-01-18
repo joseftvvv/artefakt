@@ -1,0 +1,550 @@
+<!doctype html> <!-- grund: html5-dokument -->
+<html lang="de"> <!-- grund: sprache setzen -->
+<head> <!-- grund: kopfbereich start -->
+    <meta charset="utf-8"> <!-- grund: zeichenkodierung -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- grund: mobile layout -->
+    <title>surveillance capitalism – demo</title> <!-- grund: tab titel -->
+
+    <style> /* grund: styles im dokument */
+    :root { /* grund: css variablen */
+        --bg: #0b0f14; /* grund: hintergrund */
+        --card: #121a24; /* grund: kartenfarbe */
+        --text: #e9eef5; /* grund: textfarbe */
+        --muted: #b7c2d0; /* grund: grautext */
+        --accent: #7dd3fc; /* grund: akzent */
+        --danger: #fb7185; /* grund: warnfarbe */
+        --ok: #86efac; /* grund: ok-farbe */
+        --border: rgba(255,255,255,.12); /* grund: rand */
+    } /* grund: variablen ende */
+
+    * { box-sizing: border-box; } /* grund: layout berechenbar */
+    body { /* grund: body style */
+        margin: 0; /* grund: rand weg */
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; /* grund: font */
+        background: radial-gradient(1200px 800px at 20% 10%, rgba(125,211,252,.12), transparent 60%),
+        radial-gradient(900px 700px at 80% 30%, rgba(251,113,133,.10), transparent 55%),
+        var(--bg); /* grund: hintergrund */
+        color: var(--text); /* grund: textfarbe */
+        min-height: 100vh; /* grund: volle hoehe */
+        display: grid; /* grund: zentrieren */
+        place-items: center; /* grund: zentrieren */
+        padding: 24px; /* grund: abstand */
+    } /* grund: body ende */
+
+    .app { /* grund: container */
+        width: min(920px, 100%); /* grund: max breite */
+        display: grid; /* grund: grid */
+        gap: 16px; /* grund: abstand */
+    } /* grund: container ende */
+
+    header { /* grund: header */
+        display: flex; /* grund: nebeneinander */
+        align-items: baseline; /* grund: linie */
+        justify-content: space-between; /* grund: platz */
+        gap: 12px; /* grund: abstand */
+        padding: 10px 2px; /* grund: innenabstand */
+    } /* grund: header ende */
+
+    .title { /* grund: titel */
+        font-size: clamp(20px, 3vw, 28px); /* grund: responsive */
+        font-weight: 700; /* grund: dick */
+        letter-spacing: .2px; /* grund: spacing */
+    } /* grund: titel ende */
+
+    .tagline { /* grund: tagline */
+        color: var(--muted); /* grund: grautext */
+        font-size: 14px; /* grund: groesse */
+    } /* grund: tagline ende */
+
+    .card { /* grund: karten */
+        background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); /* grund: gloss */
+        border: 1px solid var(--border); /* grund: rand */
+        border-radius: 18px; /* grund: runde ecken */
+        padding: 18px; /* grund: innenabstand */
+        box-shadow: 0 10px 30px rgba(0,0,0,.35); /* grund: schatten */
+    } /* grund: card ende */
+
+    .progress { /* grund: progress bar container */
+        height: 10px; /* grund: hoehe */
+        border-radius: 999px; /* grund: rund */
+        background: rgba(255,255,255,.08); /* grund: hintergrund */
+        overflow: hidden; /* grund: sauber */
+    } /* grund: progress ende */
+
+    .bar { /* grund: progress bar */
+        height: 100%; /* grund: volle hoehe */
+        width: 0%; /* grund: start */
+        background: linear-gradient(90deg, var(--accent), var(--danger)); /* grund: farbverlauf */
+        transition: width .25s ease; /* grund: animation */
+    } /* grund: bar ende */
+
+    .screen { /* grund: screen basis */
+        display: none; /* grund: versteckt */
+        gap: 14px; /* grund: abstand */
+    } /* grund: screen ende */
+
+    .screen.active { /* grund: sichtbarer screen */
+        display: grid; /* grund: zeigen */
+    } /* grund: active ende */
+
+    .question { /* grund: frage */
+        font-size: 20px; /* grund: groesse */
+        font-weight: 650; /* grund: dick */
+        line-height: 1.25; /* grund: zeilenhoehe */
+    } /* grund: frage ende */
+
+    .hint { /* grund: hinweis */
+        color: var(--muted); /* grund: grautext */
+        font-size: 14px; /* grund: groesse */
+        line-height: 1.4; /* grund: zeilenhoehe */
+    } /* grund: hint ende */
+
+    .grid { /* grund: button grid */
+        display: grid; /* grund: grid */
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* grund: 2 spalten */
+        gap: 10px; /* grund: abstand */
+    } /* grund: grid ende */
+
+    button { /* grund: buttons */
+        appearance: none; /* grund: default weg */
+        border: 1px solid var(--border); /* grund: rand */
+        background: rgba(18,26,36,.65); /* grund: hintergrund */
+        color: var(--text); /* grund: text */
+        padding: 12px 12px; /* grund: padding */
+        border-radius: 14px; /* grund: rund */
+        cursor: pointer; /* grund: cursor */
+        text-align: left; /* grund: links */
+        transition: transform .05s ease, border-color .15s ease, background .15s ease; /* grund: feel */
+    } /* grund: button ende */
+
+    button:hover { /* grund: hover */
+        border-color: rgba(125,211,252,.55); /* grund: highlight */
+        background: rgba(18,26,36,.85); /* grund: dunkler */
+    } /* grund: hover ende */
+
+    button:active { transform: translateY(1px); } /* grund: click feel */
+
+    .row { /* grund: row */
+        display: flex; /* grund: flex */
+        gap: 10px; /* grund: abstand */
+        flex-wrap: wrap; /* grund: umbruch */
+        align-items: center; /* grund: mitte */
+        justify-content: space-between; /* grund: platz */
+    } /* grund: row ende */
+
+    .pill { /* grund: kleine badge */
+        display: inline-flex; /* grund: inline flex */
+        align-items: center; /* grund: mitte */
+        gap: 8px; /* grund: abstand */
+        padding: 8px 10px; /* grund: padding */
+        border: 1px solid var(--border); /* grund: rand */
+        border-radius: 999px; /* grund: rund */
+        color: var(--muted); /* grund: grautext */
+        font-size: 13px; /* grund: groesse */
+        user-select: none; /* grund: nicht markieren */
+    } /* grund: pill ende */
+
+    .pill strong { color: var(--text); font-weight: 650; } /* grund: highlight */
+
+    .result-grid { /* grund: ergebnis layout */
+        display: grid; /* grund: grid */
+        grid-template-columns: repeat(3, minmax(0, 1fr)); /* grund: 3 spalten */
+        gap: 10px; /* grund: abstand */
+    } /* grund: result grid ende */
+
+    .box { /* grund: box */
+        border: 1px solid var(--border); /* grund: rand */
+        border-radius: 16px; /* grund: rund */
+        padding: 12px; /* grund: padding */
+        background: rgba(0,0,0,.18); /* grund: hintergrund */
+    } /* grund: box ende */
+
+    .box h3 { margin: 0 0 8px 0; font-size: 14px; color: var(--muted); font-weight: 650; } /* grund: box titel */
+    ul { margin: 0; padding-left: 18px; } /* grund: liste */
+    li { margin: 6px 0; } /* grund: list spacing */
+
+    .algo { /* grund: algo details */
+        border-top: 1px dashed rgba(255,255,255,.18); /* grund: trenner */
+        padding-top: 12px; /* grund: abstand */
+        color: var(--muted); /* grund: grautext */
+        font-size: 13px; /* grund: groesse */
+        line-height: 1.4; /* grund: lesbar */
+        display: none; /* grund: default aus */
+    } /* grund: algo ende */
+
+    .algo.show { display: block; } /* grund: algo sichtbar */
+
+    .footer-note { /* grund: footer */
+        color: var(--muted); /* grund: grautext */
+        font-size: 12px; /* grund: groesse */
+        text-align: center; /* grund: mitte */
+        padding: 4px 0; /* grund: abstand */
+    } /* grund: footer ende */
+
+    @media (max-width: 780px) { /* grund: responsive */
+        .grid { grid-template-columns: 1fr; } /* grund: 1 spalte */
+        .result-grid { grid-template-columns: 1fr; } /* grund: 1 spalte */
+    } /* grund: media ende */
+    </style> <!-- grund: style ende -->
+</head> <!-- grund: head ende -->
+
+<body> <!-- grund: body start -->
+<div class="app"> <!-- grund: app container -->
+    <header> <!-- grund: header start -->
+        <div> <!-- grund: left block -->
+            <div class="title">surveillance capitalism</div> <!-- grund: titel -->
+            <div class="tagline">wie daten zur waffe gegen uns werden.</div> <!-- grund: tagline -->
+        </div> <!-- grund: left block ende -->
+
+        <div class="pill" id="stepPill"> <!-- grund: status pill -->
+            schritt <strong id="stepText">0</strong>/5 <!-- grund: step text -->
+        </div> <!-- grund: pill ende -->
+    </header> <!-- grund: header ende -->
+
+    <div class="card"> <!-- grund: card start -->
+        <div class="progress" aria-label="fortschritt"> <!-- grund: progress container -->
+            <div class="bar" id="progressBar"></div> <!-- grund: progress bar -->
+        </div> <!-- grund: progress ende -->
+
+        <!-- screen: start -->
+        <section class="screen active" id="screenStart"> <!-- grund: start screen -->
+            <div class="question">in 60 sekunden: aus harmlosen klicks wird ein profil.</div> <!-- grund: hook -->
+            <div class="hint">du gibst nur antworten an. wir zeigen ein vereinfachtes modell: signale → profil → entscheidung.</div> <!-- grund: hint -->
+            <div class="row"> <!-- grund: row -->
+                <button id="startBtn">start</button> <!-- grund: start button -->
+                <span class="pill">keine echten daten · demo-modell</span> <!-- grund: badge -->
+            </div> <!-- grund: row ende -->
+        </section> <!-- grund: start screen ende -->
+
+        <!-- screen: q1 interest -->
+        <section class="screen" id="screenQ1"> <!-- grund: question1 screen -->
+            <div class="question">1) wofür interessierst du dich gerade?</div> <!-- grund: frage -->
+            <div class="hint">interessen sind starke signale: sie bestimmen, welche inhalte und werbung du siehst.</div> <!-- grund: hint -->
+            <div class="grid"> <!-- grund: options grid -->
+                <button data-q="interest" data-v="health">gesundheit / fitness</button> <!-- grund: option -->
+                <button data-q="interest" data-v="jobs">jobs / karriere</button> <!-- grund: option -->
+                <button data-q="interest" data-v="travel">reisen</button> <!-- grund: option -->
+                <button data-q="interest" data-v="gaming">gaming / entertainment</button> <!-- grund: option -->
+            </div> <!-- grund: grid ende -->
+        </section> <!-- grund: q1 ende -->
+
+        <!-- screen: q2 time -->
+        <section class="screen" id="screenQ2"> <!-- grund: question2 screen -->
+            <div class="question">2) wann bist du meistens online?</div> <!-- grund: frage -->
+            <div class="hint">zeitmuster helfen bei vorhersagen: schlaf, stress, routine, “kaufmomente”.</div> <!-- grund: hint -->
+            <div class="grid"> <!-- grund: options grid -->
+                <button data-q="onlineTime" data-v="morning">morgens</button> <!-- grund: option -->
+                <button data-q="onlineTime" data-v="night">nachts</button> <!-- grund: option -->
+                <button data-q="onlineTime" data-v="often">sehr oft / ständig</button> <!-- grund: option -->
+                <button data-q="onlineTime" data-v="rare">nur kurz / selten</button> <!-- grund: option -->
+            </div> <!-- grund: grid ende -->
+        </section> <!-- grund: q2 ende -->
+
+        <!-- screen: q3 device -->
+        <section class="screen" id="screenQ3"> <!-- grund: question3 screen -->
+            <div class="question">3) welches gerät nutzt du gerade?</div> <!-- grund: frage -->
+            <div class="hint">geräte- und app-signale werden oft als proxy für kaufkraft oder “premium”-status genutzt.</div> <!-- grund: hint -->
+            <div class="grid"> <!-- grund: options grid -->
+                <button data-q="device" data-v="iphone">iphone</button> <!-- grund: option -->
+                <button data-q="device" data-v="androidCheap">günstiges android</button> <!-- grund: option -->
+                <button data-q="device" data-v="androidPremium">premium android</button> <!-- grund: option -->
+                <button data-q="device" data-v="laptop">laptop/desktop</button> <!-- grund: option -->
+            </div> <!-- grund: grid ende -->
+        </section> <!-- grund: q3 ende -->
+
+        <!-- screen: q4 mood -->
+        <section class="screen" id="screenQ4"> <!-- grund: question4 screen -->
+            <div class="question">4) was trifft gerade eher zu?</div> <!-- grund: frage -->
+            <div class="hint">stimmung kann genutzt werden, um “vulnerable moments” zu targeten (druck, angst, unsicherheit).</div> <!-- grund: hint -->
+            <div class="grid"> <!-- grund: options grid -->
+                <button data-q="mood" data-v="stressed">gestresst</button> <!-- grund: option -->
+                <button data-q="mood" data-v="motivated">motiviert</button> <!-- grund: option -->
+                <button data-q="mood" data-v="insecure">unsicher</button> <!-- grund: option -->
+                <button data-q="mood" data-v="curious">neugierig</button> <!-- grund: option -->
+            </div> <!-- grund: grid ende -->
+        </section> <!-- grund: q4 ende -->
+
+        <!-- screen: result -->
+        <section class="screen" id="screenResult"> <!-- grund: result screen -->
+            <div class="question">ergebnis: signale → profil → entscheidung</div> <!-- grund: titel -->
+            <div class="hint">das ist ein vereinfachtes modell. echte systeme nutzen viel mehr signale (tracker, cookies, auktionen).</div> <!-- grund: hint -->
+
+            <div class="result-grid"> <!-- grund: result layout -->
+                <div class="box"> <!-- grund: box a -->
+                    <h3>a) gesammelte signale</h3> <!-- grund: titel -->
+                    <ul id="signalsList"></ul> <!-- grund: list container -->
+                </div> <!-- grund: box a ende -->
+
+                <div class="box"> <!-- grund: box b -->
+                    <h3>b) abgeleitetes profil</h3> <!-- grund: titel -->
+                    <ul id="profileList"></ul> <!-- grund: list container -->
+                </div> <!-- grund: box b ende -->
+
+                <div class="box"> <!-- grund: box c -->
+                    <h3>c) system-entscheidung</h3> <!-- grund: titel -->
+                    <ul id="decisionList"></ul> <!-- grund: list container -->
+                </div> <!-- grund: box c ende -->
+            </div> <!-- grund: result layout ende -->
+
+            <div class="row"> <!-- grund: controls row -->
+                <button id="restartBtn">neu starten</button> <!-- grund: restart -->
+                <button id="toggleAlgoBtn">zeige den “algorithmus”</button> <!-- grund: toggle algo -->
+            </div> <!-- grund: row ende -->
+
+            <div class="algo" id="algoBox"> <!-- grund: algo box -->
+                <strong>so rechnet das demo-modell:</strong> <!-- grund: headline -->
+                <ul id="algoList"></ul> <!-- grund: algo steps -->
+                <div class="hint" style="margin-top:10px;">takeaway: daten werden wertvoll, wenn sie vorhersagen ermöglichen — und vorhersagen steuern entscheidungen.</div> <!-- grund: takeaway -->
+            </div> <!-- grund: algo box ende -->
+        </section> <!-- grund: result ende -->
+    </div> <!-- grund: card ende -->
+
+    <div class="footer-note">made for miniprojekt · artefakt: interaktive demo</div> <!-- grund: footer -->
+</div> <!-- grund: app ende -->
+
+<script> // grund: js start
+const screens = [ // grund: screen liste
+    "screenStart", // grund: start id
+    "screenQ1", // grund: q1 id
+    "screenQ2", // grund: q2 id
+    "screenQ3", // grund: q3 id
+    "screenQ4", // grund: q4 id
+    "screenResult" // grund: result id
+]; // grund: screens ende
+
+const answers = { // grund: user antworten
+    interest: null, // grund: interesse
+    onlineTime: null, // grund: zeit
+    device: null, // grund: geraet
+    mood: null // grund: stimmung
+}; // grund: answers ende
+
+let currentIndex = 0; // grund: aktueller screen index
+
+const stepText = document.getElementById("stepText"); // grund: step element
+const stepPill = document.getElementById("stepPill"); // grund: pill element
+const progressBar = document.getElementById("progressBar"); // grund: progress element
+
+const signalsList = document.getElementById("signalsList"); // grund: signals list
+const profileList = document.getElementById("profileList"); // grund: profile list
+const decisionList = document.getElementById("decisionList"); // grund: decision list
+const algoList = document.getElementById("algoList"); // grund: algo list
+const algoBox = document.getElementById("algoBox"); // grund: algo box
+
+const startBtn = document.getElementById("startBtn"); // grund: start button
+const restartBtn = document.getElementById("restartBtn"); // grund: restart button
+const toggleAlgoBtn = document.getElementById("toggleAlgoBtn"); // grund: toggle button
+
+function showScreen(index) { // grund: screen anzeigen
+    currentIndex = index; // grund: index setzen
+    for (const id of screens) { // grund: alle screens
+        document.getElementById(id).classList.remove("active"); // grund: aus
+    } // grund: loop ende
+    document.getElementById(screens[index]).classList.add("active"); // grund: an
+
+    const step = Math.max(0, index); // grund: step rechnen
+    const totalSteps = 5; // grund: 5 schritte (ohne result)
+    const shownStep = Math.min(step, totalSteps); // grund: clamp
+    stepText.textContent = String(shownStep); // grund: ui update
+    const percent = (shownStep / totalSteps) * 100; // grund: percent rechnen
+    progressBar.style.width = `${percent}%`; // grund: bar setzen
+
+    stepPill.style.opacity = (index === 0) ? "0.75" : "1"; // grund: start softer
+} // grund: showScreen ende
+
+function resetAnswers() { // grund: reset
+    answers.interest = null; // grund: reset
+    answers.onlineTime = null; // grund: reset
+    answers.device = null; // grund: reset
+    answers.mood = null; // grund: reset
+} // grund: resetAnswers ende
+
+function labelFor(key, value) { // grund: label mapping
+    const map = { // grund: mapping objekt
+        interest: { // grund: interest map
+            health: "interesse: gesundheit/fitness", // grund: label
+            jobs: "interesse: jobs/karriere", // grund: label
+            travel: "interesse: reisen", // grund: label
+            gaming: "interesse: gaming/entertainment" // grund: label
+        }, // grund: interest map ende
+        onlineTime: { // grund: time map
+            morning: "online: morgens", // grund: label
+            night: "online: nachts", // grund: label
+            often: "online: sehr oft", // grund: label
+            rare: "online: selten" // grund: label
+        }, // grund: time map ende
+        device: { // grund: device map
+            iphone: "gerät: iphone", // grund: label
+            androidCheap: "gerät: günstiges android", // grund: label
+            androidPremium: "gerät: premium android", // grund: label
+            laptop: "gerät: laptop/desktop" // grund: label
+        }, // grund: device map ende
+        mood: { // grund: mood map
+            stressed: "stimmung: gestresst", // grund: label
+            motivated: "stimmung: motiviert", // grund: label
+            insecure: "stimmung: unsicher", // grund: label
+            curious: "stimmung: neugierig" // grund: label
+        } // grund: mood map ende
+    }; // grund: map ende
+    return map[key]?.[value] ?? `${key}: ${value}`; // grund: fallback
+} // grund: labelFor ende
+
+function computeModel() { // grund: scoring modell
+    let buyScore = 0; // grund: kaufscore
+    let pricePower = 0; // grund: kaufkraft
+    let vulnerable = 0; // grund: vulnerabilitaet
+
+    const steps = []; // grund: algo steps text
+
+    // interest contribution
+    if (answers.interest === "health") { buyScore += 2; vulnerable += 1; steps.push("interest=health → buy +2, vuln +1"); } // grund: regel
+    if (answers.interest === "jobs") { buyScore += 1; steps.push("interest=jobs → buy +1"); } // grund: regel
+    if (answers.interest === "travel") { buyScore += 2; steps.push("interest=travel → buy +2"); } // grund: regel
+    if (answers.interest === "gaming") { buyScore += 1; steps.push("interest=gaming → buy +1"); } // grund: regel
+
+    // time contribution
+    if (answers.onlineTime === "night") { vulnerable += 2; steps.push("online=night → vuln +2"); } // grund: regel
+    if (answers.onlineTime === "often") { buyScore += 2; steps.push("online=often → buy +2"); } // grund: regel
+    if (answers.onlineTime === "morning") { buyScore += 1; steps.push("online=morning → buy +1"); } // grund: regel
+    if (answers.onlineTime === "rare") { buyScore -= 1; steps.push("online=rare → buy -1"); } // grund: regel
+
+    // device contribution
+    if (answers.device === "iphone") { pricePower += 2; steps.push("device=iphone → power +2"); } // grund: regel
+    if (answers.device === "androidPremium") { pricePower += 2; steps.push("device=androidPremium → power +2"); } // grund: regel
+    if (answers.device === "laptop") { pricePower += 1; steps.push("device=laptop → power +1"); } // grund: regel
+    if (answers.device === "androidCheap") { pricePower -= 1; steps.push("device=androidCheap → power -1"); } // grund: regel
+
+    // mood contribution
+    if (answers.mood === "stressed") { vulnerable += 2; buyScore += 1; steps.push("mood=stressed → vuln +2, buy +1"); } // grund: regel
+    if (answers.mood === "insecure") { vulnerable += 2; steps.push("mood=insecure → vuln +2"); } // grund: regel
+    if (answers.mood === "motivated") { buyScore += 2; steps.push("mood=motivated → buy +2"); } // grund: regel
+    if (answers.mood === "curious") { buyScore += 1; steps.push("mood=curious → buy +1"); } // grund: regel
+
+    // normalize to buckets
+    const buyBucket = buyScore >= 5 ? "hoch" : (buyScore >= 2 ? "mittel" : "niedrig"); // grund: bucket
+    const powerBucket = pricePower >= 2 ? "hoch" : (pricePower >= 0 ? "mittel" : "niedrig"); // grund: bucket
+    const vulnBucket = vulnerable >= 4 ? "hoch" : (vulnerable >= 2 ? "mittel" : "niedrig"); // grund: bucket
+
+    steps.push(`bucket: buy=${buyBucket}, power=${powerBucket}, vuln=${vulnBucket}`); // grund: step add
+
+    return { buyScore, pricePower, vulnerable, buyBucket, powerBucket, vulnBucket, steps }; // grund: return
+} // grund: computeModel ende
+
+function fillResult() { // grund: ergebnis füllen
+    // clear lists
+    signalsList.innerHTML = ""; // grund: clear
+    profileList.innerHTML = ""; // grund: clear
+    decisionList.innerHTML = ""; // grund: clear
+    algoList.innerHTML = ""; // grund: clear
+
+    // signals
+    for (const key of Object.keys(answers)) { // grund: loop answers
+        const li = document.createElement("li"); // grund: li bauen
+        li.textContent = labelFor(key, answers[key]); // grund: text setzen
+        signalsList.appendChild(li); // grund: append
+    } // grund: signals loop ende
+
+    // model
+    const model = computeModel(); // grund: model rechnen
+
+    // profile items
+    const profileItems = [ // grund: profile liste
+        `kaufbereitschaft: ${model.buyBucket}`, // grund: item
+        `kaufkraft (proxy): ${model.powerBucket}`, // grund: item
+        `vulnerabilität: ${model.vulnBucket}` // grund: item
+    ]; // grund: profileItems ende
+
+    // add small “interpretations”
+    if (model.vulnBucket === "hoch") { profileItems.push("mögliche trigger: druck/angst/unsicherheit"); } // grund: interpretation
+    if (model.buyBucket === "hoch") { profileItems.push("wahrscheinlich: impuls-käufe möglich"); } // grund: interpretation
+    if (model.powerBucket === "hoch") { profileItems.push("wahrscheinlich: premium-angebote werden bevorzugt"); } // grund: interpretation
+
+    for (const text of profileItems) { // grund: loop profile
+        const li = document.createElement("li"); // grund: li bauen
+        li.textContent = text; // grund: text
+        profileList.appendChild(li); // grund: append
+    } // grund: loop ende
+
+    // decision (simple rules)
+    const decisions = []; // grund: decisions array
+
+    // pick ad type by interest
+    if (answers.interest === "health") decisions.push("werbung: „7-tage reset: besser schlafen & weniger stress“"); // grund: ad
+    if (answers.interest === "jobs") decisions.push("werbung: „bewerbungs-coaching: schneller zum job“"); // grund: ad
+    if (answers.interest === "travel") decisions.push("werbung: „last-minute deal: jetzt buchen“"); // grund: ad
+    if (answers.interest === "gaming") decisions.push("werbung: „neues bundle: nur heute rabatt“"); // grund: ad
+
+    // content pressure by vulnerability
+    if (model.vulnBucket === "hoch") decisions.push("content: emotionale headlines (druck/angst) werden häufiger gezeigt"); // grund: content
+    if (model.vulnBucket !== "hoch") decisions.push("content: neutrale vergleiche und tipps werden häufiger gezeigt"); // grund: content
+
+    // pricing by power
+    if (model.powerBucket === "hoch") decisions.push("angebot: premium-plan zuerst (teurer)"); // grund: pricing
+    if (model.powerBucket === "mittel") decisions.push("angebot: standard-plan zuerst"); // grund: pricing
+    if (model.powerBucket === "niedrig") decisions.push("angebot: discount-plan zuerst"); // grund: pricing
+
+    for (const text of decisions) { // grund: loop decisions
+        const li = document.createElement("li"); // grund: li bauen
+        li.textContent = text; // grund: text
+        decisionList.appendChild(li); // grund: append
+    } // grund: loop ende
+
+    // algo steps
+    for (const step of model.steps) { // grund: loop steps
+        const li = document.createElement("li"); // grund: li bauen
+        li.textContent = step; // grund: text
+        algoList.appendChild(li); // grund: append
+    } // grund: loop ende
+} // grund: fillResult ende
+
+function nextScreen() { // grund: next
+    const nextIndex = Math.min(currentIndex + 1, screens.length - 1); // grund: clamp next
+    showScreen(nextIndex); // grund: show
+} // grund: nextScreen ende
+
+function goToResult() { // grund: result
+    fillResult(); // grund: build result
+    showScreen(screens.length - 1); // grund: show result
+} // grund: goToResult ende
+
+// start click
+startBtn.addEventListener("click", () => { // grund: start listener
+    showScreen(1); // grund: go to q1
+}); // grund: listener ende
+
+// restart click
+restartBtn.addEventListener("click", () => { // grund: restart listener
+    resetAnswers(); // grund: reset
+    algoBox.classList.remove("show"); // grund: hide algo
+    showScreen(0); // grund: back to start
+}); // grund: listener ende
+
+// toggle algo
+toggleAlgoBtn.addEventListener("click", () => { // grund: toggle listener
+    algoBox.classList.toggle("show"); // grund: toggle class
+    toggleAlgoBtn.textContent = algoBox.classList.contains("show") ? "verstecke den “algorithmus”" : "zeige den “algorithmus”"; // grund: label switch
+}); // grund: listener ende
+
+// option clicks (event delegation)
+document.addEventListener("click", (event) => { // grund: global click
+    const target = event.target; // grund: target
+    if (!(target instanceof HTMLButtonElement)) return; // grund: only buttons
+    const q = target.dataset.q; // grund: dataset q
+    const v = target.dataset.v; // grund: dataset v
+    if (!q || !v) return; // grund: ignore non options
+
+    answers[q] = v; // grund: save answer
+
+    // if last question -> result, else next
+    if (q === "mood") { // grund: last step check
+        goToResult(); // grund: show result
+    } else { // grund: else
+        nextScreen(); // grund: show next q
+    } // grund: if ende
+}); // grund: global listener ende
+
+// initial ui
+showScreen(0); // grund: initial screen
+</script> <!-- grund: js ende -->
+</body> <!-- grund: body ende -->
+</html> <!-- grund: html ende -->
