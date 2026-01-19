@@ -96,9 +96,26 @@
     .tips{border:1px solid rgba(134,239,172,.28); background:rgba(134,239,172,.08); border-radius:16px; padding:12px}
     .footer-note{text-align:center; color:var(--muted); font-size:12px; padding:4px 0}
 
-    .tablewrap{border:1px solid var(--border); border-radius:16px; overflow:hidden; background:rgba(0,0,0,.18)}
-    table{width:100%; border-collapse:collapse}
-    th,td{padding:10px 10px; text-align:left; border-bottom:1px solid rgba(255,255,255,.08); font-size:13px}
+    /* FIX: Mobile Tabelle sichtbar machen (horizontal scroll) */
+    .tablewrap{
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:rgba(0,0,0,.18);
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+    table{
+      width:max-content;
+      min-width:100%;
+      border-collapse:collapse;
+    }
+    th,td{
+      padding:10px 10px;
+      text-align:left;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      font-size:13px;
+      white-space:nowrap;
+    }
     th{color:var(--muted); font-weight:800}
     tr:last-child td{border-bottom:none}
     .winner{outline:2px solid rgba(134,239,172,.35); background:rgba(134,239,172,.06)}
@@ -225,7 +242,7 @@
 
         <div class="box" style="margin-top:10px;">
           <h3>D) Anzeigen-Auktion (eingeblendete Wahrscheinlichkeiten)</h3>
-          <div class="tablewrap">
+          <div class="tablewrap" aria-label="Anzeigen-Auktion (horizontal scroll auf Mobile)">
             <table>
               <thead>
               <tr>
