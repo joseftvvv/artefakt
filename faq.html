@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | K&R Recruiting Partners - Alle Antworten</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+
+    <style>
+        :root {
+            --bg-warm-gray: #ebeae5;
+            --text-black: #0a0a0a;
+            --white: #ffffff;
+            --gold: #D4AF37;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-warm-gray);
+            color: var(--text-black);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+        }
+
+        /* NAVIGATION (Gleich wie Startseite) */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 5vw;
+        }
+
+        .logo-wrapper { display: flex; align-items: center; text-decoration: none; }
+        .main-logo-image { height: 65px; width: auto; mix-blend-mode: multiply; margin-right: 20px; }
+        .logo-text-container { display: flex; flex-direction: column; border-left: 2px solid var(--gold); padding-left: 20px; line-height: 1.1; }
+        .main-title { font-weight: 900; font-size: 24px; letter-spacing: 1px; color: var(--text-black); text-transform: uppercase; }
+        .sub-title { font-weight: 400; font-size: 13px; letter-spacing: 6px; color: #555; text-transform: uppercase; margin-top: 4px; }
+
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-black); font-weight: 400; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+        /* FAQ HEADER */
+        .faq-hero { padding: 10vh 5vw 5vh 5vw; max-width: 1000px; margin: 0 auto; }
+        .faq-hero h1 { font-weight: 900; font-size: clamp(40px, 6vw, 80px); text-transform: uppercase; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
+        .faq-hero p { font-size: 18px; font-weight: 300; max-width: 600px; color: #444; }
+
+        /* FAQ SEKTIONEN */
+        .faq-container { padding: 5vh 5vw 15vh 5vw; max-width: 1000px; margin: 0 auto; }
+
+        .faq-category { margin-bottom: 60px; }
+        .faq-category h2 { font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; color: var(--gold); margin-bottom: 30px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+
+        .accordion-item { border-bottom: 1px solid #ccc; }
+        .accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; cursor: pointer; }
+        .accordion-header h3 { font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        .accordion-icon { font-size: 24px; font-weight: 300; }
+
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .accordion-content p { padding: 0 0 30px 0; font-size: 16px; font-weight: 300; color: #333; }
+
+        /* FOOTER (Gleich wie Startseite) */
+        footer { background-color: var(--text-black); color: var(--white); padding: 8vh 5vw 5vh 5vw; }
+        .footer-bottom { max-width: 1600px; margin: 40px auto 0; padding-top: 30px; border-top: 1px solid #222; display: flex; justify-content: space-between; font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-bottom a { color: #666; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 20px; }
+            .main-logo-image { height: 45px; }
+            .main-title { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="logo-wrapper">
+        <img src="logo.jpg" alt="Logo" class="main-logo-image">
+        <div class="logo-text-container">
+            <span class="main-title">K&R Recruiting</span>
+            <span class="sub-title">Partners</span>
+        </div>
+    </a>
+    <div class="nav-links">
+        <a href="index.html">Zurück zur Startseite</a>
+    </div>
+</nav>
+
+<section class="faq-hero">
+    <h1>Häufige<br>Fragen.</h1>
+    <p>Hier finden Sie alle Details zu unserer Arbeitsweise, den Verträgen und unserem Qualitätsversprechen.</p>
+</section>
+
+<section class="faq-container">
+
+    <div class="faq-category">
+        <h2>Prozess & Ablauf</h2>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h3>Wie läuft die erste Zusammenarbeit ab?</h3>
+                <span class="accordion-icon">+</span>
+            </div>
+            <div class="accordion-content">
+                <p>Nach Ihrer Anfrage (via Telefon oder Buchungstool) führen wir ein kurzes Bedarfsgespräch. Wir klären die Anforderungen und den Zeitplan. Innerhalb der vereinbarten Frist erhalten Sie die Profile der passenden Mitarbeiter oder wir bestätigen direkt den Einsatz für den Notfall.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h3>Woher kommt Ihr Personalpool?</h3>
+                <span class="accordion-icon">+</span>
+            </div>
+            <div class="accordion-content">
+                <p>Kemal Koc verfügt über ein über Jahre gewachsenes Insider-Netzwerk in Wien. Viele unserer Mitarbeiter kommen aus Empfehlungen und exklusiven Pools, die auf dem freien Markt nicht zugänglich sind.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-category">
+        <h2>Kosten & Verträge</h2>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h3>Wie hoch sind die Kosten für eine Vermittlung?</h3>
+                <span class="accordion-icon">+</span>
+            </div>
+            <div class="accordion-content">
+                <p>Unsere Honorarmodelle sind transparent und fair. Bei der direkten Personalvermittlung arbeiten wir erfolgsbasiert. Beim Personal-Leasing berechnen wir klare Stundensätze, die alle Nebenkosten bereits beinhalten. Kontaktieren Sie uns für ein individuelles Angebot.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h3>Gibt es eine Kündigungsfrist für das Leasing?</h3>
+                <span class="accordion-icon">+</span>
+            </div>
+            <div class="accordion-content">
+                <p>Wir bieten maximale Flexibilität. Kurze Einsätze können tagesweise gebucht werden. Bei langfristiger Unterstützung vereinbaren wir kundenfreundliche Fristen, die zu Ihrem Projekt passen.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-category">
+        <h2>Qualität & Rechtliches</h2>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h3>Sind die Mitarbeiter versichert?</h3>
+                <span class="accordion-icon">+</span>
+            </div>
+            <div class="accordion-content">
+                <p>Selbstverständlich. Alle Mitarbeiter sind ordnungsgemäß angemeldet und über uns unfall- sowie haftpflichtversichert. Sie tragen als Kunde kein administratives Risiko.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h3>Was unterscheidet K&R von großen Zeitarbeitsfirmen?</h3>
+                <span class="accordion-icon">+</span>
+            </div>
+            <div class="accordion-content">
+                <p>Der persönliche Fokus. Bei uns sind Sie keine Nummer. Kemal Koc kennt die Anforderungen der Wiener Top-Hotellerie und Logistik persönlich. Wir liefern Qualität statt Quantität und reagieren um ein Vielfaches schneller als bürokratische Großkonzerne.</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<footer>
+    <div class="footer-bottom">
+        <div>&copy; 2026 K&R Recruiting Partners.</div>
+        <div><a href="impressum.html">Impressum</a> | <a href="datenschutz.html">Datenschutz</a></div>
+    </div>
+</footer>
+
+<script>
+    document.querySelectorAll('.accordion-header').forEach(button => {
+        button.addEventListener('click', () => {
+            const accordionItem = button.parentElement;
+            const content = accordionItem.querySelector('.accordion-content');
+            const icon = accordionItem.querySelector('.accordion-icon');
+            const isActive = accordionItem.classList.contains('active');
+
+            if (!isActive) {
+                accordionItem.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.textContent = '−';
+            } else {
+                accordionItem.classList.remove('active');
+                content.style.maxHeight = null;
+                icon.textContent = '+';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
