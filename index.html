@@ -375,20 +375,44 @@
             opacity: 1;
             transform: translateY(0);
         }
+        
+            /* --- RESPONSIVE (HANDY ANSICHT) --- */
+            @media (max-width: 768px) {
+                nav { flex-direction: column; gap: 20px; text-align: center; }
+                .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; }
 
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 20px; }
-            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; }
-            .about-grid, .footer-content { grid-template-columns: 1fr; gap: 40px; }
-            .hero h1 { letter-spacing: -1px; }
+                /* FIX 1: Hier sagen wir, dass die 3 Säulen untereinander stehen sollen (1fr = 1 Spalte) */
+                .features-grid, .about-grid, .footer-content {
+                    grid-template-columns: 1fr;
+                    gap: 50px;
+                }
 
-            /* Anpassung des Logos für kleine Bildschirme */
-            .main-logo-image { height: 50px; margin-right: 15px; }
-            .logo-text-container { padding-left: 15px; }
-            .main-title { font-size: 18px; }
-            .sub-title { font-size: 10px; letter-spacing: 4px; }
-        }
+                /* FIX 2: Die Überschrift und Abstände für kleine Displays anpassen */
+                .hero { padding-top: 5vh; }
+                .hero h1 {
+                    font-size: 50px; /* Deutlich kleiner für Handys */
+                    letter-spacing: -1px;
+                    margin-bottom: 20px;
+                }
+                .hero p {
+                    font-size: 18px;
+                    margin-bottom: 40px;
+                }
+
+                /* FIX 3: Der Button geht über die ganze Breite, das tippt sich leichter */
+                .btn-primary {
+                    width: 100%;
+                    text-align: center;
+                }
+
+                /* Anpassung des Logos für kleine Bildschirme */
+                .logo-wrapper { justify-content: center; }
+                .main-logo-image { height: 45px; margin-right: 15px; }
+                .logo-text-container { padding-left: 15px; text-align: left; }
+                .main-title { font-size: 18px; }
+                .sub-title { font-size: 10px; letter-spacing: 4px; }
+            }
+        
     </style>
 </head>
 <body>
