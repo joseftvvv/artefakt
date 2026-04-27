@@ -7,12 +7,15 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;900&display=swap" rel="stylesheet">
 
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+
     <style>
         /* --- FARBPALETTE & VARIABLEN --- */
         :root {
             --bg-warm-gray: #ebeae5;
             --text-black: #0a0a0a;
             --white: #ffffff;
+            --gold: #D4AF37;
         }
 
         /* --- GRUND-LAYOUT --- */
@@ -30,10 +33,10 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            scroll-behavior: smooth; /* Sorgt für sanftes Scrollen beim Klicken auf Menü-Links */
+            scroll-behavior: smooth;
         }
 
-        /* --- NAVIGATION --- */
+        /* --- NAVIGATION & NEUES LOGO-LAYOUT --- */
         nav {
             display: flex;
             justify-content: space-between;
@@ -41,13 +44,52 @@
             padding: 40px 5vw;
         }
 
-        .logo {
-            font-weight: 900;
-            font-size: 22px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
             text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        /* Das Bildzeichen (Dein Quadrat) */
+        .main-logo-image {
+            height: 65px; /* Perfekte Größe passend zum Text */
+            width: auto;
+            display: block;
+            mix-blend-mode: multiply; /* Macht den weißen Hintergrund unsichtbar */
+            margin-right: 20px; /* Abstand zum goldenen Strich */
+        }
+
+        /* Der Container für Strich und Text */
+        .logo-text-container {
+            display: flex;
+            flex-direction: column;
+            border-left: 2px solid var(--gold); /* Der elegante Trennstrich */
+            padding-left: 20px; /* Abstand zwischen Strich und Text */
+            line-height: 1.1;
+        }
+
+        /* K&R RECRUITING */
+        .main-title {
+            font-weight: 900;
+            font-size: 24px;
+            letter-spacing: 1px;
             color: var(--text-black);
+            text-transform: uppercase;
+        }
+
+        /* PARTNERS */
+        .sub-title {
+            font-weight: 400;
+            font-size: 13px;
+            letter-spacing: 6px; /* Weite Sperrung für den Premium-Look */
+            color: #555555;
+            text-transform: uppercase;
+            margin-top: 4px;
         }
 
         .nav-links {
@@ -83,7 +125,6 @@
         .btn-nav:hover {
             transform: scale(1.05);
             background-color: #333;
-            opacity: 1 !important;
         }
 
         /* --- HERO BEREICH --- */
@@ -136,7 +177,7 @@
             color: var(--text-black);
         }
 
-        /* --- 3-SÄULEN BEREICH (Vorteile) --- */
+        /* --- 3-SÄULEN BEREICH --- */
         .features-section {
             padding: 10vh 5vw;
             max-width: 1600px;
@@ -152,11 +193,6 @@
             margin-top: 60px;
         }
 
-        .feature-card {
-            display: flex;
-            flex-direction: column;
-        }
-
         .feature-card .number {
             font-size: 100px;
             font-weight: 900;
@@ -170,6 +206,7 @@
 
         .feature-card:hover .number {
             opacity: 1;
+            -webkit-text-stroke: 2px var(--gold);
         }
 
         .feature-card h3 {
@@ -207,7 +244,7 @@
             height: 100%;
             object-fit: cover;
             aspect-ratio: 3 / 4;
-            transition: filter 0.4s ease;
+            transition: transform 0.4s ease;
         }
 
         .profile-image:hover {
@@ -239,7 +276,7 @@
             text-transform: uppercase;
         }
 
-        /* --- FOOTER / KONTAKT BEREICH --- */
+        /* --- FOOTER --- */
         footer {
             background-color: var(--text-black);
             color: var(--white);
@@ -274,11 +311,10 @@
             color: var(--white);
             text-decoration: none;
             transition: color 0.3s;
-            font-weight: 400;
         }
 
         .contact-details a:hover {
-            color: #888888;
+            color: var(--gold);
         }
 
         .footer-calendar {
@@ -294,14 +330,6 @@
             font-weight: 900;
             margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .footer-calendar p {
-            font-weight: 300;
-            margin-bottom: 40px;
-            color: #999999;
-            line-height: 1.6;
         }
 
         .btn-white {
@@ -319,7 +347,8 @@
         }
 
         .btn-white:hover {
-            background-color: #cccccc;
+            background-color: var(--gold);
+            color: var(--white);
         }
 
         .footer-bottom {
@@ -330,13 +359,12 @@
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            font-weight: 300;
-            color: #666666;
+            color: #666;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* --- ANIMATION STYLES --- */
+        /* --- ANIMATIONS --- */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -348,29 +376,32 @@
             transform: translateY(0);
         }
 
-        /* --- RESPONSIVE DESIGN --- */
-        @media (max-width: 1024px) {
-            .features-grid { grid-template-columns: repeat(2, 1fr); }
-            .about-grid, .footer-content { gap: 40px; }
-        }
-
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 20px; padding: 30px 20px; }
-            .nav-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
-            .hero { padding: 40px 20px; }
+            nav { flex-direction: column; gap: 20px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .about-grid, .footer-content { grid-template-columns: 1fr; gap: 40px; }
             .hero h1 { letter-spacing: -1px; }
-            .btn-primary { width: 100%; text-align: center; }
-            .features-grid, .about-grid, .footer-content { grid-template-columns: 1fr; }
-            .feature-card .number { font-size: 80px; }
-            .footer-calendar { padding: 30px; }
-            .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
+
+            /* Anpassung des Logos für kleine Bildschirme */
+            .main-logo-image { height: 50px; margin-right: 15px; }
+            .logo-text-container { padding-left: 15px; }
+            .main-title { font-size: 18px; }
+            .sub-title { font-size: 10px; letter-spacing: 4px; }
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="index.html" class="logo">K&R Recruiting</a>
+    <a href="index.html" class="logo-wrapper">
+        <img src="logo.jpg" alt="K&R Recruiting Partners Logo" class="main-logo-image">
+
+        <div class="logo-text-container">
+            <span class="main-title">K&R Recruiting</span>
+            <span class="sub-title">Partners</span>
+        </div>
+    </a>
     <div class="nav-links">
         <a href="#services">Services</a>
         <a href="#ueber-uns">Über uns</a>
@@ -390,29 +421,28 @@
         <div class="feature-card">
             <div class="number">01</div>
             <h3>Rekordzeit</h3>
-            <p>Personalengpässe erfordern sofortiges Handeln. Durch unsere etablierten Prozesse und unseren großen Talentpool besetzen wir Ihre Vakanzen in kürzester Zeit.</p>
+            <p>Personalengpässe erfordern sofortiges Handeln. Durch unsere etablierten Prozesse besetzen wir Ihre Vakanzen in kürzester Zeit.</p>
         </div>
         <div class="feature-card">
             <div class="number">02</div>
-            <h3>Exklusives Netzwerk</h3>
-            <p>Profitieren Sie von Kemals jahrelangem Insider-Netzwerk und erhalten Sie Zugang zu Top-Talenten, die über klassische Stellenanzeigen unsichtbar bleiben.</p>
+            <h3>Netzwerk</h3>
+            <p>Profitieren Sie von Kemals Insider-Netzwerk und erhalten Sie Zugang zu Talenten, die unsichtbar bleiben.</p>
         </div>
         <div class="feature-card">
             <div class="number">03</div>
-            <h3>Passgenauigkeit</h3>
-            <p>Jeder Kandidat durchläuft eine rigorose Prüfung, um sicherzustellen, dass er fachlich und menschlich perfekt in Ihr Team passt.</p>
+            <h3>Präzision</h3>
+            <p>Jeder Kandidat durchläuft eine Prüfung, um sicherzustellen, dass er perfekt in Ihr Team passt.</p>
         </div>
     </div>
 </section>
 
 <section id="ueber-uns" class="about-section reveal">
     <div class="about-grid">
-        <img src="Kemal.png" alt="Kemal Koc - K&R Recruiting Partners" class="profile-image">
-
+        <img src="Kemal.png" alt="Kemal Koc" class="profile-image">
         <div class="about-text">
-            <h2>Hinter dem<br>Match.<br>Kemal Koc.</h2>
-            <p>Hinter K&R Recruiting Partners stehe ich, Kemal Koc. Mit langjähriger Erfahrung in der Personalvermittlung habe ich ein tiefes Verständnis für die Bedürfnisse des Marktes aufgebaut.</p>
-            <p>Ich weiß, dass Personalengpässe oft unvorhergesehen auftreten. Wir liefern keine Notlösungen, sondern echte Ergebnisse basierend auf Vertrauen.</p>
+            <h2>Hinter dem Match.<br>Kemal Koc.</h2>
+            <p>Hinter K&R Recruiting Partners stehe ich, Kemal Koc. Ich weiß, dass Personalengpässe oft unvorhergesehen auftreten.</p>
+            <p>Wir liefern keine Notlösungen, sondern echte Ergebnisse basierend auf Vertrauen und Handschlagqualität.</p>
             <div class="signature">Kemal Koc – Gründer</div>
         </div>
     </div>
@@ -421,29 +451,24 @@
 <footer class="reveal">
     <div id="starten" class="footer-content">
         <div class="footer-info">
-            <h2>Lassen Sie uns<br>starten.</h2>
+            <h2>Lassen Sie uns starten.</h2>
             <div class="contact-details">
                 <p><strong>Kemal Koc</strong><br>Gründer & Geschäftsführer</p>
                 <p><a href="mailto:K.kemal@gmx.at">K.kemal@gmx.at</a></p>
-                <p><a href="tel:+43000000000">+43 (0) 123 456 789</a></p>
             </div>
         </div>
-
         <div class="footer-calendar">
-            <h3>Direkt Termin buchen</h3>
-            <p>Wählen Sie einfach einen passenden Zeitslot in meinem Kalender aus.</p>
+            <h3>Termin buchen</h3>
             <a href="kalender.html" class="btn-white">Zum Online-Kalender</a>
         </div>
     </div>
-
     <div class="footer-bottom">
-        <div>&copy; 2026 K&R Recruiting Partners. Alle Rechte vorbehalten.</div>
-        <div><a href="impressum.html" style="color: #666; text-decoration: none;">Impressum</a> &nbsp;|&nbsp; <a href="datenschutz.html" style="color: #666; text-decoration: none;">Datenschutz</a></div>
+        <div>&copy; 2026 K&R Recruiting Partners.</div>
+        <div><a href="impressum.html" style="color:#666; text-decoration:none;">Impressum</a> | <a href="datenschutz.html" style="color:#666; text-decoration:none;">Datenschutz</a></div>
     </div>
 </footer>
 
 <script>
-    // Skript für die Einblende-Animation beim Scrollen
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -451,7 +476,6 @@
             }
         });
     }, { threshold: 0.1 });
-
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 </script>
 
