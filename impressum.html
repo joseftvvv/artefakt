@@ -4,37 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Impressum | K&R Recruiting Partners</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+
     <style>
-        body { background-color: #ebeae5; color: #0a0a0a; font-family: 'Montserrat', sans-serif; padding: 10vw; line-height: 1.6; }
-        h1 { font-weight: 900; text-transform: uppercase; font-size: 50px; margin-bottom: 50px; letter-spacing: -2px; }
-        h2 { font-weight: 900; text-transform: uppercase; margin-top: 40px; font-size: 18px; }
-        p { font-weight: 300; margin-bottom: 20px; }
-        .back-link { display: inline-block; margin-bottom: 40px; text-decoration: none; color: #0a0a0a; font-weight: 900; text-transform: uppercase; font-size: 12px; border-bottom: 2px solid #0a0a0a; }
+        :root { --bg-warm-gray: #ebeae5; --text-black: #0a0a0a; --white: #ffffff; --gold: #D4AF37; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-warm-gray); color: var(--text-black); font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 40px 5vw; }
+        .logo-wrapper { display: flex; align-items: center; text-decoration: none; }
+        .main-logo-image { height: 65px; width: auto; mix-blend-mode: multiply; margin-right: 20px; }
+        .logo-text-container { display: flex; flex-direction: column; border-left: 2px solid var(--gold); padding-left: 20px; line-height: 1.1; }
+        .main-title { font-weight: 900; font-size: 24px; letter-spacing: 1px; color: var(--text-black); text-transform: uppercase; }
+        .sub-title { font-weight: 400; font-size: 13px; letter-spacing: 6px; color: #555555; text-transform: uppercase; margin-top: 4px; }
+        .nav-links a { text-decoration: none; color: var(--text-black); font-weight: 900; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        .legal-content { flex: 1; padding: 5vh 5vw 15vh 5vw; max-width: 900px; margin: 0 auto; width: 100%; }
+        .legal-content h1 { font-weight: 900; font-size: clamp(40px, 6vw, 70px); text-transform: uppercase; letter-spacing: -2px; margin-bottom: 50px; border-bottom: 2px solid var(--text-black); padding-bottom: 15px; }
+        .legal-content h2 { font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-top: 40px; margin-bottom: 15px; }
+        .legal-content p { font-size: 16px; font-weight: 300; line-height: 1.8; color: #333; margin-bottom: 20px; }
+
+        footer { background-color: var(--text-black); color: #666; padding: 40px 5vw; text-align: center; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: auto; }
+        footer a { color: #666; text-decoration: none; margin: 0 10px; }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 20px; padding-top: 30px; }
+            .main-logo-image { height: 45px; }
+            .main-title { font-size: 18px; }
+        }
     </style>
 </head>
 <body>
-<a href="index.html" class="back-link">← Zurück zur Startseite</a>
-<h1>Impressum</h1>
 
-<h2>Angaben gemäß Informationspflicht laut §5 E-Commerce Gesetz:</h2>
-<p>
-    <strong>K&R Recruiting Partners</strong><br>
-    Kemal Koc<br>
-    [DEINE STRASSE UND HAUSNUMMER]<br>
-    [PLZ UND ORT]<br>
-    Österreich
-</p>
+<nav>
+    <a href="index.html" class="logo-wrapper">
+        <img src="logo.jpg" alt="Logo" class="main-logo-image">
+        <div class="logo-text-container">
+            <span class="main-title">K&R Recruiting</span>
+            <span class="sub-title">Partners</span>
+        </div>
+    </a>
+    <div class="nav-links">
+        <a href="index.html">← Zurück zur Startseite</a>
+    </div>
+</nav>
 
-<h2>Kontakt:</h2>
-<p>
-    Telefon: [DEINE NUMMER]<br>
-    E-Mail: K.kemal@gmx.at
-</p>
+<section class="legal-content">
+    <h1>Impressum.</h1>
 
-<h2>Unternehmensgegenstand:</h2>
-<p>Arbeitsvermittlung & Personalberatung</p>
+    <h2>Angaben gemäß Informationspflicht laut §5 E-Commerce Gesetz:</h2>
+    <p>
+        <strong>K&R Recruiting Partners</strong><br>
+        Kemal Koc<br>
+        [DEINE STRASSE UND HAUSNUMMER]<br>
+        [PLZ UND ORT]<br>
+        Österreich
+    </p>
 
+    <h2>Kontakt:</h2>
+    <p>
+        Telefon: [DEINE NUMMER]<br>
+        E-Mail: <a href="mailto:K.kemal@gmx.at" style="color: black; font-weight: 400;">K.kemal@gmx.at</a>
+    </p>
+
+    <h2>Unternehmensgegenstand:</h2>
+    <p>Arbeitsvermittlung & Personalberatung</p>
+
+    <h2>Aufsichtsbehörde/Gewerbebehörde:</h2>
+    <p>Bezirkshauptmannschaft [DEIN BEZIRK]</p>
+</section>
+
+<footer>
+    <div>&copy; 2026 K&R Recruiting Partners.</div>
+    <div style="margin-top: 15px;">
+        <a href="datenschutz.html">Datenschutz</a> |
+        <a href="faq.html">FAQ</a>
+    </div>
+</footer>
+
+</body>
+</html>
 <h2>Aufsichtsbehörde/Gewerbebehörde:</h2>
 <p>Bezirkshauptmannschaft [DEIN BEZIRK]</p>
 </body>
