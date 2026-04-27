@@ -30,6 +30,7 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            scroll-behavior: smooth; /* Sorgt für sanftes Scrollen beim Klicken auf Menü-Links */
         }
 
         /* --- NAVIGATION --- */
@@ -45,6 +46,8 @@
             font-size: 22px;
             letter-spacing: 1px;
             text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-black);
         }
 
         .nav-links {
@@ -280,7 +283,7 @@
         }
 
         .footer-calendar {
-            background-color: #151515; /* Ein Hauch heller als das reine Schwarz, um die Box abzuheben */
+            background-color: #151515;
             padding: 50px;
             display: flex;
             flex-direction: column;
@@ -334,73 +337,45 @@
             letter-spacing: 1px;
         }
 
-        /* --- RESPONSIVE DESIGN (Für Handys & Tablets) --- */
+        /* --- ANIMATION STYLES --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 1024px) {
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .about-grid {
-                gap: 40px;
-            }
-            .footer-content {
-                gap: 40px;
-            }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-grid, .footer-content { gap: 40px; }
         }
 
         @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-                gap: 20px;
-                padding: 30px 20px;
-            }
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 20px;
-            }
-            .hero {
-                padding: 40px 20px;
-                text-align: left;
-            }
-            .hero h1 {
-                letter-spacing: -1px;
-            }
-            .btn-primary {
-                width: 100%;
-                text-align: center;
-            }
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            .feature-card .number {
-                font-size: 80px;
-            }
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            .footer-calendar {
-                padding: 30px;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
+            nav { flex-direction: column; gap: 20px; padding: 30px 20px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
+            .hero { padding: 40px 20px; }
+            .hero h1 { letter-spacing: -1px; }
+            .btn-primary { width: 100%; text-align: center; }
+            .features-grid, .about-grid, .footer-content { grid-template-columns: 1fr; }
+            .feature-card .number { font-size: 80px; }
+            .footer-calendar { padding: 30px; }
+            .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">K&R Recruiting</div>
+    <a href="index.html" class="logo">K&R Recruiting</a>
     <div class="nav-links">
-        <a href="#">Services</a>
-        <a href="#">Über uns</a>
-        <a href="#">Kontakt</a>
+        <a href="#services">Services</a>
+        <a href="#ueber-uns">Über uns</a>
+        <a href="#starten">Kontakt</a>
         <a href="kalender.html" class="btn-nav">JETZT BUCHEN</a>
     </div>
 </nav>
@@ -411,48 +386,41 @@
     <a href="kalender.html" class="btn-primary">Jetzt Gespräch buchen</a>
 </section>
 
-<section class="features-section">
+<section id="services" class="features-section reveal">
     <div class="features-grid">
-
         <div class="feature-card">
             <div class="number">01</div>
             <h3>Rekordzeit</h3>
-            <p>Personalengpässe erfordern sofortiges Handeln. Durch unsere etablierten Prozesse und unseren großen Talentpool besetzen wir Ihre Vakanzen in kürzester Zeit, ohne Kompromisse bei der Qualität.</p>
+            <p>Personalengpässe erfordern sofortiges Handeln. Durch unsere etablierten Prozesse und unseren großen Talentpool besetzen wir Ihre Vakanzen in kürzester Zeit.</p>
         </div>
-
         <div class="feature-card">
             <div class="number">02</div>
             <h3>Exklusives Netzwerk</h3>
-            <p>Wir finden nicht nur die Suchenden, sondern auch die Besten. Profitieren Sie von Kemals jahrelangem Insider-Netzwerk und erhalten Sie Zugang zu Top-Talenten, die über klassische Stellenanzeigen unsichtbar bleiben.</p>
+            <p>Profitieren Sie von Kemals jahrelangem Insider-Netzwerk und erhalten Sie Zugang zu Top-Talenten, die über klassische Stellenanzeigen unsichtbar bleiben.</p>
         </div>
-
         <div class="feature-card">
             <div class="number">03</div>
             <h3>Passgenauigkeit</h3>
-            <p>Wir vermitteln keine kurzfristigen Notlösungen. Jeder Kandidat durchläuft eine rigorose Prüfung, um sicherzustellen, dass er nicht nur fachlich, sondern auch sozial der perfekte Match für Ihre Unternehmenskultur ist.</p>
+            <p>Jeder Kandidat durchläuft eine rigorose Prüfung, um sicherzustellen, dass er fachlich und menschlich perfekt in Ihr Team passt.</p>
         </div>
-
     </div>
 </section>
 
-<section class="about-section">
+<section id="ueber-uns" class="about-section reveal">
     <div class="about-grid">
-
         <img src="Kemal.png" alt="Kemal Koc - K&R Recruiting Partners" class="profile-image">
 
         <div class="about-text">
             <h2>Hinter dem<br>Match.<br>Kemal Koc.</h2>
-            <p>Hinter K&R Recruiting Partners stehe ich, Kemal Koc. Mit langjähriger Erfahrung in der Personalvermittlung habe ich ein tiefes Verständnis für die Bedürfnisse des Marktes und ein belastbares Netzwerk aus exzellenten, branchenführenden Geschäftspartnern aufgebaut.</p>
-            <p>Ich weiß, dass Personalengpässe oft unvorhergesehen auftreten. Wir liefern keine Notlösungen, sondern Kandidaten, die fachlich und menschlich genau in Ihr Team passen. Profitieren Sie von einer Zusammenarbeit, die auf Handschlagqualität, Vertrauen und echten Ergebnissen basiert.</p>
+            <p>Hinter K&R Recruiting Partners stehe ich, Kemal Koc. Mit langjähriger Erfahrung in der Personalvermittlung habe ich ein tiefes Verständnis für die Bedürfnisse des Marktes aufgebaut.</p>
+            <p>Ich weiß, dass Personalengpässe oft unvorhergesehen auftreten. Wir liefern keine Notlösungen, sondern echte Ergebnisse basierend auf Vertrauen.</p>
             <div class="signature">Kemal Koc – Gründer</div>
         </div>
-
     </div>
 </section>
 
-<footer>
-    <div class="footer-content">
-
+<footer class="reveal">
+    <div id="starten" class="footer-content">
         <div class="footer-info">
             <h2>Lassen Sie uns<br>starten.</h2>
             <div class="contact-details">
@@ -464,10 +432,9 @@
 
         <div class="footer-calendar">
             <h3>Direkt Termin buchen</h3>
-            <p>Wählen Sie einfach einen passenden Zeitslot in meinem Kalender aus, um Ihr Personal-Anliegen oder Ihre Karriere-Ziele zu besprechen.</p>
+            <p>Wählen Sie einfach einen passenden Zeitslot in meinem Kalender aus.</p>
             <a href="kalender.html" class="btn-white">Zum Online-Kalender</a>
         </div>
-
     </div>
 
     <div class="footer-bottom">
@@ -475,6 +442,19 @@
         <div><a href="impressum.html" style="color: #666; text-decoration: none;">Impressum</a> &nbsp;|&nbsp; <a href="datenschutz.html" style="color: #666; text-decoration: none;">Datenschutz</a></div>
     </div>
 </footer>
+
+<script>
+    // Skript für die Einblende-Animation beim Scrollen
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
 
 </body>
 </html>
